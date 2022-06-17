@@ -33,13 +33,21 @@
 #define LED_PIN               GPIO_PIN_5
 #define LED_STATE_ON          1
 
+#define LED2_PORT              GPIOB
+#define LED2_PIN               GPIO_PIN_9
+#define LED2_STATE_ON          0
+
 //--------------------------------------------------------------------+
 // Button
 //--------------------------------------------------------------------+
 
-#define BUTTON_PORT           GPIOC
-#define BUTTON_PIN            GPIO_PIN_11
-#define BUTTON_STATE_ACTIVE   1
+#define START_BUTTON_PORT           GPIOC
+#define START_BUTTON_PIN            GPIO_PIN_11
+#define START_BUTTON_STATE_ACTIVE   0
+
+#define HOLD_BUTTON_PORT           GPIOC
+#define HOLD_BUTTON_PIN            GPIO_PIN_8
+#define HOLD_BUTTON_STATE_ACTIVE   0
 
 #define TINYUF2_DFU_DOUBLE_TAP  1
 

@@ -51,12 +51,20 @@ void board_init(void)
 
   GPIO_InitTypeDef  GPIO_InitStruct;
 
-#ifdef BUTTON_PIN
-  GPIO_InitStruct.Pin = BUTTON_PIN;
+#ifdef START_BUTTON_PIN
+  GPIO_InitStruct.Pin = START_BUTTON_PIN;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
-  HAL_GPIO_Init(BUTTON_PORT, &GPIO_InitStruct);
+  HAL_GPIO_Init(START_BUTTON_PORT, &GPIO_InitStruct);
+#endif
+
+#ifdef HOLD_BUTTON_PIN
+  GPIO_InitStruct.Pin = HOLD_BUTTON_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+  HAL_GPIO_Init(HOLD_BUTTON_PORT, &GPIO_InitStruct);
 #endif
 
 #ifdef LED_PIN
@@ -67,6 +75,16 @@ void board_init(void)
   HAL_GPIO_Init(LED_PORT, &GPIO_InitStruct);
 
   board_led_write(0);
+#endif
+
+#ifdef LED2_PIN
+  GPIO_InitStruct.Pin = LED2_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+  HAL_GPIO_Init(LED2_PORT, &GPIO_InitStruct);
+
+  board_led2_write(0);
 #endif
 
 #if NEOPIXEL_NUMBER
@@ -196,9 +214,22 @@ void board_app_jump(void)
   HAL_GPIO_DeInit(BUTTON_PORT, BUTTON_PIN);
 #endif
 
+#ifdef START_BUTTON_PIN
+  HAL_GPIO_DeInit(HOLD_BUTTON_PORT, START_BUTTON_PIN);
+#endif
+
+#ifdef HOLD_BUTTON_PIN
+  HAL_GPIO_DeInit(HOLD_BUTTON_PORT, HOLD_BUTTON_PIN);
+#endif
+
 #ifdef LED_PIN
   HAL_GPIO_DeInit(LED_PORT, LED_PIN);
 #endif
+
+#ifdef LED2_PIN
+  HAL_GPIO_DeInit(LED2_PORT, LED2_PIN);
+#endif
+
 
 #if NEOPIXEL_NUMBER
   HAL_GPIO_DeInit(NEOPIXEL_PORT, NEOPIXEL_PIN);
@@ -227,6 +258,7 @@ void board_app_jump(void)
 
   /* switch exception handlers to the application */
   SCB->VTOR = (uint32_t) BOARD_FLASH_APP_START;
+  __DSB();
 
   // Set stack pointer
   __set_MSP(app_vector[0]);
@@ -249,6 +281,29 @@ uint8_t board_usb_get_serial(uint8_t serial_id[16])
 void board_led_write(uint32_t state)
 {
   HAL_GPIO_WritePin(LED_PORT, LED_PIN, state ? LED_STATE_ON : (1-LED_STATE_ON));
+}
+
+void board_led2_write(uint32_t state)
+{
+  HAL_GPIO_WritePin(LED2_PORT, LED2_PIN, state ? LED_STATE_ON : (1-LED_STATE_ON));
+}
+
+bool board_start_button_read(void)
+{
+  GPIO_PinState read = HAL_GPIO_ReadPin(START_BUTTON_PORT, START_BUTTON_PIN);
+  if(read == START_BUTTON_STATE_ACTIVE)
+    return true;
+  else
+    return false;
+}
+
+bool board_hold_button_read(void)
+{
+  GPIO_PinState read = HAL_GPIO_ReadPin(HOLD_BUTTON_PORT, HOLD_BUTTON_PIN);
+  if(read == HOLD_BUTTON_STATE_ACTIVE)
+    return true;
+  else
+    return false;
 }
 
 #if NEOPIXEL_NUMBER

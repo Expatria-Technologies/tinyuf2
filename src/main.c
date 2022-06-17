@@ -65,8 +65,11 @@ int main(void)
   board_init();
   TU_LOG1("TinyUF2\r\n");
 
+  board_led2_write(!(board_start_button_read() && board_hold_button_read()) );
+
   // if not DFU mode, jump to App
-  if ( !check_dfu_mode() )
+  if ( !check_dfu_mode() && !(board_start_button_read() && board_hold_button_read()) )
+  //if ( !check_dfu_mode() )
   {
     TU_LOG1("Jump to application\r\n");
     board_app_jump();
@@ -114,6 +117,8 @@ static bool check_dfu_mode(void)
     // TODO maybe reset is better than continue
   }
 #endif
+
+  //add check for button?
 
   // Check if app is valid
   if ( !board_app_valid() ) return true;

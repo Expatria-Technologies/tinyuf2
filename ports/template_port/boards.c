@@ -68,11 +68,6 @@ uint8_t board_usb_get_serial(uint8_t serial_id[16])
 // LED pattern
 //--------------------------------------------------------------------+
 
-void board_led_write(uint32_t state)
-{
-  (void) state;
-}
-
 void board_rgb_write(uint8_t const rgb[])
 {
   (void) rgb;
