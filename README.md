@@ -1,8 +1,8 @@
-# TinyUF2 Bootloader
+# TinyUF2 Bootloader (Flexi-HAL Version)
 
 [![Build Status](https://github.com/adafruit/tinyuf2/workflows/Build/badge.svg)](https://github.com/adafruit/tinyuf2/actions)[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-This repo is cross-platform UF2 Bootloader projects for MCUs based on [TinyUSB](https://github.com/hathach/tinyusb)
+This is a fork of the TinyUF2 repo developed specifically for the [Flexi-HAL](https://github.com/Expatria-Technologies/Flexi-HAL) project which uses the stm32f446re microcontroller. The TinyUF2 project is a cross-platform UF2 Bootloader project for MCUs based on [TinyUSB](https://github.com/hathach/tinyusb). 
 
 ```
 .
@@ -32,7 +32,7 @@ Following is generic compiling information. Each port may require extra set-up a
 
 ### Compile
 
-To build this for a specific board, we need to change current directory to its port folder
+To build this for a specific board, we need to change the current directory to its port folder
 
 ```
 $ cd ports/stm32f4
@@ -41,17 +41,17 @@ $ cd ports/stm32f4
 Then compile with `make BOARD=[board_name] all`, for example
 
 ```
-make BOARD=feather_stm32f405_express all
+make BOARD=flexi_hal_stm32f446re all
 ```
 
-The required mcu driver submodule if any will be clone automatically if needed. 
+The required mcu driver submodules will be cloned automatically if needed.
 
 ### Flash
 
 `flash` target will use the default on-board debugger (jlink/cmsisdap/stlink/dfu) to flash the binary, please install those support software in advance. Some board use bootloader/DFU via serial which is required to pass to make command
 
 ```
-$ make BOARD=feather_stm32f405_express flash
+$ make BOARD=flexi_hal_stm32f446re flash
 ```
 
 If you use an external debugger, there is `flash-jlink`, `flash-stlink`, `flash-pyocd` which are mostly like to work out of the box for most of the supported board.
@@ -61,7 +61,7 @@ If you use an external debugger, there is `flash-jlink`, `flash-stlink`, `flash-
 To compile for debugging add `DEBUG=1`, this will mostly change the compiler optimization
 
 ```
-$ make BOARD=feather_stm32f405_express DEBUG=1 all
+$ make BOARD=flexi_hal_stm32f446re DEBUG=1 all
 ```
 
 #### Log
@@ -71,7 +71,7 @@ Should you have an issue running example and/or submitting an bug report. You co
 - **LOG=2** and **LOG=3** will print more information with TinyUSB stack events
 
 ```
-$ make BOARD=feather_stm32f405_express LOG=1 all
+$ make BOARD=flexi_hal_stm32f446re LOG=1 all
 ```
 
 #### Logger
@@ -88,6 +88,6 @@ By default log message is printed via on-board UART which is slow and take lots 
   - Software viewer should be provided along with your debugger driver.
 
 ```
-$ make BOARD=feather_stm32f405_express LOG=2 LOGGER=rtt all
-$ make BOARD=feather_stm32f405_express LOG=2 LOGGER=swo all
+$ make BOARD=flexi_hal_stm32f446re LOG=2 LOGGER=rtt all
+$ make BOARD=flexi_hal_stm32f446re LOG=2 LOGGER=swo all
 ```
